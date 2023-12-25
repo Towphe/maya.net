@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "maya.net", "maya.net\maya.net.csproj", "{8A59CE86-3166-4911-8857-739553D63B70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "test\test.csproj", "{53EBFACB-B55A-4338-A62E-D08F0682F720}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -10,5 +14,15 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8A59CE86-3166-4911-8857-739553D63B70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A59CE86-3166-4911-8857-739553D63B70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A59CE86-3166-4911-8857-739553D63B70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A59CE86-3166-4911-8857-739553D63B70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53EBFACB-B55A-4338-A62E-D08F0682F720}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53EBFACB-B55A-4338-A62E-D08F0682F720}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53EBFACB-B55A-4338-A62E-D08F0682F720}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53EBFACB-B55A-4338-A62E-D08F0682F720}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
