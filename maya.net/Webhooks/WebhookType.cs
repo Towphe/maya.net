@@ -1,5 +1,7 @@
 namespace maya.net.Webhooks;
 
+// NOTE: to access static webhook type, use as WebhookType.<type>.Name
+
 public class WebhookType{
     public string Name {get; private set;}
     private WebhookType(string name) {Name = name;}

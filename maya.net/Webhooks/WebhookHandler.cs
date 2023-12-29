@@ -43,9 +43,7 @@ public class WebhookHandler : IWebhookHandler{
         }
         return JsonConvert.DeserializeObject<Webhook>(responseBody);
     }
-    /// <summary>
-    /// Gets all webhooks under an account.
-    /// </summary>
+
     public async Task<IReadOnlyCollection<Webhook>?> GetWebhooks(){
         HttpRequestMessage req = new HttpRequestMessage(){
             Method = HttpMethod.Get,
@@ -63,9 +61,7 @@ public class WebhookHandler : IWebhookHandler{
         }
         return JsonConvert.DeserializeObject<IReadOnlyCollection<Webhook>>(responseBody);
     }
-    /// <summary>
-    /// Gets a specific webhook by its webhookId.
-    /// </summary>
+
     public async Task<Webhook?> GetWebhook(string webhookId){
         HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, webhookId){
             Headers = {
@@ -82,9 +78,7 @@ public class WebhookHandler : IWebhookHandler{
         }
         return JsonConvert.DeserializeObject<Webhook>(responseBody);
     }
-    /// <summary>
-    /// Updates a webhook's callbackUrl. 
-    /// </summary>
+
     public async Task<Webhook?> UpdateWebhook(string webhookId, string callbackUrl){
         var body = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(new{
             callbackUrl = callbackUrl
@@ -106,9 +100,7 @@ public class WebhookHandler : IWebhookHandler{
         }
         return JsonConvert.DeserializeObject<Webhook>(responseBody);
     }
-    /// <summary>
-    /// Deletes a webhook.
-    /// </summary>
+
     public async Task<Webhook?> DeleteWebhook(string webhookId){
         HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Delete, webhookId){
             Headers = {
