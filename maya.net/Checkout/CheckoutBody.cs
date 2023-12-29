@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using maya.net.Common;
@@ -5,8 +6,10 @@ using maya.net.Common;
 namespace maya.net.Checkout;
 
 public class CheckoutBody{
+    [Required]
     public TotalAmount totalAmount {get; set;}
     public List<Item> items {get; set;}
+    [Required]
     public string requestReferenceNumber {get; set;}
     public Metadata? metadata {get; set;}
 }
@@ -93,5 +96,6 @@ public class KountBillingAddress {
 
 public class Contact {
     public string phone {get; set;}
+    [EmailAddress(ErrorMessage = "Invalid email address")]
     public string email {get; set;}
 }
