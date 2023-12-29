@@ -1,23 +1,22 @@
-namespace maya.net.Checkout;
+namespace maya.net.Wallet;
 
+using System.Net.Http;
 using Newtonsoft.Json;
 
-public class CheckoutHandler : ICheckoutHandler{
-    private static readonly string _webhookURL = "https://pg-sandbox.paymaya.com/checkout/v1/checkouts/";
+public class WalletHandler : IWalletHandler{
+    private static readonly string _webhookURL = "https://pg-sandbox.paymaya.com/payby/v2/paymaya/payments/";
     private readonly string _publicKey;
     private readonly string _secretKey;
     private readonly HttpClient _httpClient;
-    // refer to https://stackoverflow.com/questions/53884417/net-core-di-ways-of-passing-parameters-to-constructor
-    // when applying dependency injection to this service (and other services here)
-    public CheckoutHandler(string pKey, string sKey){
+    public WalletHandler(string pKey, string sKey){
         this._publicKey = pKey;
         this._secretKey = sKey;
         this._httpClient = new HttpClient();
         this._httpClient.DefaultRequestHeaders.Clear();
         this._httpClient.BaseAddress = new Uri(_webhookURL);
     }
-    public async Task<CheckoutResponse?> CreateCheckout(CheckoutBody checkout){
-        var body = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(checkout));
+    public async Task<WalletResponse?> CreateSinglePayment(WalletBody wallet){
+        var body = new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(wallet));
 
         HttpRequestMessage req = new HttpRequestMessage(){
             Method = HttpMethod.Post,
@@ -34,8 +33,7 @@ public class CheckoutHandler : ICheckoutHandler{
             logError(response, responseBody);
             return null;
         }
-
-        return JsonConvert.DeserializeObject<CheckoutResponse>(responseBody);
+        return JsonConvert.DeserializeObject<WalletResponse>(responseBody);
     }
 
     private string toBase64(string str) => Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(str));

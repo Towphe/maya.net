@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
+using maya.net.Common;
 
 namespace maya.net.Checkout;
 
@@ -7,6 +8,7 @@ public class CheckoutBody{
     public TotalAmount totalAmount {get; set;}
     public List<Item> items {get; set;}
     public string requestReferenceNumber {get; set;}
+    public Metadata? metadata {get; set;}
 }
 
 public class BasicCheckoutBody : CheckoutBody{
