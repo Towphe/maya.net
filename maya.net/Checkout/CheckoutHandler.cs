@@ -7,6 +7,8 @@ public class CheckoutHandler : ICheckoutHandler{
     private readonly string _publicKey;
     private readonly string _secretKey;
     private readonly HttpClient _httpClient;
+    // refer to https://stackoverflow.com/questions/53884417/net-core-di-ways-of-passing-parameters-to-constructor
+    // when applying dependency injection to this service (and other services here)
     public CheckoutHandler(string pKey, string sKey){
         this._publicKey = pKey;
         this._secretKey = sKey;
