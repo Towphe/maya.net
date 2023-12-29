@@ -1,6 +1,7 @@
 namespace maya.net.Webhooks;
 
 using maya.net;
+using maya.net.Common;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Runtime.InteropServices;
@@ -30,7 +31,7 @@ public class WebhookHandler : IWebhookHandler{
             Method = HttpMethod.Post,
             Content = body,
             Headers = {
-                Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", toBase64(this._secretKey))
+                Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", StringParser.toBase64(this._secretKey))
             }
         };
 
@@ -38,7 +39,7 @@ public class WebhookHandler : IWebhookHandler{
         string responseBody = await response.Content.ReadAsStringAsync();
         
         if (response.StatusCode != System.Net.HttpStatusCode.OK){
-            logError(response, responseBody);
+            LogHelper.logError(response, responseBody);
             return null;
         }
         return JsonConvert.DeserializeObject<Webhook>(responseBody);
@@ -48,7 +49,7 @@ public class WebhookHandler : IWebhookHandler{
         HttpRequestMessage req = new HttpRequestMessage(){
             Method = HttpMethod.Get,
             Headers = {
-                Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", toBase64(this._secretKey))
+                Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", StringParser.toBase64(this._secretKey))
             }
         };
 
@@ -56,7 +57,7 @@ public class WebhookHandler : IWebhookHandler{
         string responseBody = await response.Content.ReadAsStringAsync();
         
         if (response.StatusCode != System.Net.HttpStatusCode.OK){
-            logError(response, responseBody);
+            LogHelper.logError(response, responseBody);
             return null;
         }
         return JsonConvert.DeserializeObject<IReadOnlyCollection<Webhook>>(responseBody);
@@ -65,7 +66,7 @@ public class WebhookHandler : IWebhookHandler{
     public async Task<Webhook?> GetWebhook(string webhookId){
         HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, webhookId){
             Headers = {
-                Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", toBase64(this._secretKey))
+                Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", StringParser.toBase64(this._secretKey))
             }
         };
 
@@ -73,7 +74,7 @@ public class WebhookHandler : IWebhookHandler{
         string responseBody = await response.Content.ReadAsStringAsync();
 
         if (response.StatusCode != System.Net.HttpStatusCode.OK){
-            logError(response, responseBody);
+            LogHelper.logError(response, responseBody);
             return null;
         }
         return JsonConvert.DeserializeObject<Webhook>(responseBody);
@@ -87,7 +88,7 @@ public class WebhookHandler : IWebhookHandler{
         HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Put, webhookId){
             Content = body,
             Headers = {
-                Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", toBase64(this._secretKey))
+                Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", StringParser.toBase64(this._secretKey))
             }
         };
 
@@ -95,7 +96,7 @@ public class WebhookHandler : IWebhookHandler{
         string responseBody = await response.Content.ReadAsStringAsync();
 
         if (response.StatusCode != System.Net.HttpStatusCode.OK){
-            logError(response, responseBody);
+            LogHelper.logError(response, responseBody);
             return null;
         }
         return JsonConvert.DeserializeObject<Webhook>(responseBody);
@@ -104,7 +105,7 @@ public class WebhookHandler : IWebhookHandler{
     public async Task<Webhook?> DeleteWebhook(string webhookId){
         HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Delete, webhookId){
             Headers = {
-                Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", toBase64(this._secretKey))
+                Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", StringParser.toBase64(this._secretKey))
             }
         };
 
@@ -112,14 +113,9 @@ public class WebhookHandler : IWebhookHandler{
         string responseBody = await response.Content.ReadAsStringAsync();
         
         if (response.StatusCode != System.Net.HttpStatusCode.OK){
-            logError(response, responseBody);
+            LogHelper.logError(response, responseBody);
             return null;
         }
         return JsonConvert.DeserializeObject<Webhook>(responseBody);
-    }
-    private string toBase64(string str) => Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(str));
-    private void logError(HttpResponseMessage response, string responseBody){
-        ErrorResponse err = JsonConvert.DeserializeObject<ErrorResponse>(responseBody);
-        Console.WriteLine($"{response.StatusCode} : {err.Error}.\nCode: {err.Code}.\nReference: {err.Reference}");
     }
 }
