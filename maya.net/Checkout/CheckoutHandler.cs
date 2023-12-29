@@ -1,17 +1,16 @@
 namespace maya.net.Checkout;
 
+using maya.net.Common;
 using Newtonsoft.Json;
 
 public class CheckoutHandler : ICheckoutHandler{
     private static readonly string _webhookURL = "https://pg-sandbox.paymaya.com/checkout/v1/checkouts/";
     private readonly string _publicKey;
-    private readonly string _secretKey;
     private readonly HttpClient _httpClient;
     // refer to https://stackoverflow.com/questions/53884417/net-core-di-ways-of-passing-parameters-to-constructor
     // when applying dependency injection to this service (and other services here)
-    public CheckoutHandler(string pKey, string sKey){
+    public CheckoutHandler(string pKey){
         this._publicKey = pKey;
-        this._secretKey = sKey;
         this._httpClient = new HttpClient();
         this._httpClient.DefaultRequestHeaders.Clear();
         this._httpClient.BaseAddress = new Uri(_webhookURL);
@@ -23,7 +22,7 @@ public class CheckoutHandler : ICheckoutHandler{
             Method = HttpMethod.Post,
             Content = body,
             Headers = {
-                Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", toBase64(this._publicKey))
+                Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", StringParser.toBase64(this._publicKey))
             }
         };
 
@@ -31,16 +30,10 @@ public class CheckoutHandler : ICheckoutHandler{
         string responseBody = await response.Content.ReadAsStringAsync();
         
         if (response.StatusCode != System.Net.HttpStatusCode.OK){
-            logError(response, responseBody);
+            LogHelper.logError(response, responseBody);
             return null;
         }
 
         return JsonConvert.DeserializeObject<CheckoutResponse>(responseBody);
-    }
-
-    private string toBase64(string str) => Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(str));
-    private void logError(HttpResponseMessage response, string responseBody){
-        ErrorResponse err = JsonConvert.DeserializeObject<ErrorResponse>(responseBody);
-        Console.WriteLine($"{response.StatusCode} : {err.Error}.\nCode: {err.Code}.\nReference: {err.Reference}");
     }
 }
