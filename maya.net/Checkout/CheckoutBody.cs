@@ -9,6 +9,7 @@ public class CheckoutBody{
     [Required]
     public TotalAmount totalAmount {get; set;}
     public List<Item> items {get; set;}
+    public RedirectUrl? redirectUrl {get; set;}
     [Required]
     public string requestReferenceNumber {get; set;}
     public Metadata? metadata {get; set;}
