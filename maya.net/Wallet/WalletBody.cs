@@ -22,11 +22,3 @@ public class TotalAmount {
     public string currency {get; set;} = "PHP";
 }
 
-public class RedirectUrl{
-    [Required]
-    public string success {get; set;}
-    [Required]
-    public string failure {get; set;}
-    [Required]
-    public string cancel {get; set;}
-}
