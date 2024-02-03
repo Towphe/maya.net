@@ -1,24 +1,18 @@
 namespace maya.net.Webhooks;
 
-using maya.net;
 using maya.net.Common;
 using System.Net.Http;
-using System.Net.Http.Json;
-using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 
 public class WebhookHandler : IWebhookHandler{
-    private static readonly string _webhookURL = "https://pg-sandbox.paymaya.com/payments/v1/webhooks/";
-    private readonly string _publicKey;
+    private readonly string _webhookURL = "https://pg-sandbox.paymaya.com/payments/v1/webhooks/";
     private readonly string _secretKey;
     private readonly HttpClient _httpClient;
-    private readonly UriBuilder _uriBuilder;
-    public WebhookHandler(string pKey, string sKey){
-        this._publicKey = pKey;
+    public WebhookHandler(string sKey, bool isSandbox = true){
         this._secretKey = sKey;
         this._httpClient = new HttpClient();
-        this._uriBuilder = new UriBuilder(_webhookURL);
         this._httpClient.DefaultRequestHeaders.Clear();
+        if (!isSandbox) this._webhookURL = "https://pg.paymaya.com/payments/v1/webhooks/";
         this._httpClient.BaseAddress = new Uri(_webhookURL);
     }
     public async Task<Webhook?> CreateWebhook(string name, string callback){

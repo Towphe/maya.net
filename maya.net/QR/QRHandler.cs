@@ -4,15 +4,16 @@ using Newtonsoft.Json;
 namespace maya.net.QR;
 
 public class QRHandler : IQRHandler{
-    private static readonly string _webhookURL = "https://pg-sandbox.paymaya.com/payments/v1/qr/payments/";
+    private readonly string _webhookURL = "https://pg-sandbox.paymaya.com/payments/v1/qr/payments/";
     private readonly string _publicKey;
     private readonly HttpClient _httpClient;
     // refer to https://stackoverflow.com/questions/53884417/net-core-di-ways-of-passing-parameters-to-constructor
     // when applying dependency injection to this service (and other services here)
-    public QRHandler(string pKey){
+    public QRHandler(string pKey, bool isSandbox = true){
         this._publicKey = pKey;
         this._httpClient = new HttpClient();
         this._httpClient.DefaultRequestHeaders.Clear();
+        this._webhookURL = "https://pg.paymaya.com/payments/v1/qr/payments/";
         this._httpClient.BaseAddress = new Uri(_webhookURL);
     }
 

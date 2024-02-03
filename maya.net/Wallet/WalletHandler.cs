@@ -5,13 +5,14 @@ using Newtonsoft.Json;
 using maya.net.Common;
 
 public class WalletHandler : IWalletHandler{
-    private static readonly string _webhookURL = "https://pg-sandbox.paymaya.com/payby/v2/paymaya/payments/";
+    private readonly string _webhookURL = "https://pg-sandbox.paymaya.com/payby/v2/paymaya/payments/";
     private readonly string _publicKey;
     private readonly HttpClient _httpClient;
-    public WalletHandler(string pKey, string sKey){
+    public WalletHandler(string pKey, bool isSandbox = true){
         this._publicKey = pKey;
         this._httpClient = new HttpClient();
         this._httpClient.DefaultRequestHeaders.Clear();
+        if (!isSandbox) _webhookURL = "https://pg.paymaya.com/payby/v2/paymaya/payments/";
         this._httpClient.BaseAddress = new Uri(_webhookURL);
     }
     public async Task<WalletResponse?> CreateSinglePayment(WalletBody wallet){
@@ -32,6 +33,7 @@ public class WalletHandler : IWalletHandler{
             LogHelper.logError(response, responseBody);
             return null;
         }
+        
         return JsonConvert.DeserializeObject<WalletResponse>(responseBody);
     }
 }
